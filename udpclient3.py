@@ -4,7 +4,7 @@ msgFromClient = "Discovery: Who is out there?\0\n"
 
 bytesToSend = str.encode(msgFromClient)
 
-serverAddressPort = ('255.255.255.255', 30303)
+serverAddressPort = ('192.168.14.255', 30303) #255.255.255.255 or xxx.xxx.xxx.255
 
 bufferSize = 1024
 
@@ -18,8 +18,8 @@ UDPClientSocket.bind(('0.0.0.0', 30303))
 
 UDPClientSocket.sendto(bytesToSend, serverAddressPort)
 
-#msgFromServer = UDPClientSocket.recvfrom(bufferSize)
+msgFromServer = UDPClientSocket.recvfrom(bufferSize)
 
-#msg = "Message from Server {}".format(msgFromServer[0])
+msg = "Message from Server {}".format(msgFromServer[0])
 
-#print(msg)
+print(msg)

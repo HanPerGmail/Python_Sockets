@@ -12,7 +12,13 @@ class PingerThread (threading.Thread):
           cs = socket(AF_INET, SOCK_DGRAM)
           cs.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
           cs.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-          cs.sendto("Discovery: Who is out there?\0\n".encode(), ("192.168.14.255", 30303))
+          cs.bind(('0.0.0.0', 30303))
+          msgFromServer = cs.recvfrom(1024)
+          msgFromServer2 = cs.recvfrom(1024)
+          msg = "Message from Server {}".format(msgFromServer[0])
+          msg2 = "Message  2from Server {}".format(msgFromServer2[0])
+          print(msg)
+          print(msg2)
           time.sleep(1)
 
 a = PingerThread() 
@@ -20,12 +26,15 @@ a.start()
 
 
 cs = socket(AF_INET, SOCK_DGRAM)
+cs.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+cs.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
 try:
-    cs.bind(("127.0.0.1", 30303))
+    cs.bind(('0.0.0.0', 30303))
+    cs.sendto("Discovery: Who is out there?\0\n".encode(), ("192.168.14.255", 30303))
 except:
     print ('failed to bind')
     cs.close()
     raise
     cs.blocking(0)
-data = cs.recvfrom(5000) # <-- waiting forever
-print (data)
+time.sleep(1)
+
